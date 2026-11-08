@@ -1,0 +1,31 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e8] [cursor=pointer]:
+    - img [ref=e9]
+  - alert [ref=e12]
+  - generic [ref=e13]:
+    - banner [ref=e14]:
+      - generic [ref=e15]:
+        - heading "Dashboard" [level=1] [ref=e16]
+        - button "Log out" [ref=e17]
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - combobox [ref=e20]:
+          - option "Test Salon (test-salon)" [selected]
+        - 'link "Booking page: /book/test-salon" [ref=e21] [cursor=pointer]':
+          - /url: /book/test-salon
+      - generic [ref=e22]:
+        - button "bookings" [ref=e23]
+        - button "settings" [ref=e24]
+        - button "services" [ref=e25]
+        - button "hours" [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - heading "Bookings" [level=2] [ref=e29]
+          - button "Refresh" [ref=e30]
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - generic [ref=e33]: Jane Customer
+            - generic [ref=e34]: jane@example.com
+            - generic [ref=e35]: Haircut
+            - generic [ref=e36]: 09/11/2026, 10:00:00 – 10:30:00
+            - text: confirmed

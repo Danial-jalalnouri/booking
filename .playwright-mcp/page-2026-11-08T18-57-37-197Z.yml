@@ -1,0 +1,38 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - heading "Test Salon" [level=1] [ref=e13]
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: Service
+        - combobox [ref=e17]:
+          - option "Haircut (30 min)" [selected]
+        - generic [ref=e18]: Date
+        - textbox [active] [ref=e19]: 2026-11-09
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Available times
+          - generic [ref=e30]:
+            - button "10:00" [ref=e31]
+            - button "10:30" [ref=e32]
+            - button "11:00" [ref=e33]
+            - button "11:30" [ref=e34]
+            - button "12:00" [ref=e35]
+            - button "12:30" [ref=e36]
+            - button "13:00" [ref=e37]
+            - button "13:30" [ref=e38]
+            - button "14:00" [ref=e39]
+            - button "14:30" [ref=e40]
+            - button "15:00" [ref=e41]
+            - button "15:30" [ref=e42]
+            - button "16:00" [ref=e43]
+            - button "16:30" [ref=e44]
+            - button "17:00" [ref=e45]
+            - button "17:30" [ref=e46]
+      - generic [ref=e23]:
+        - heading "Your details" [level=2] [ref=e24]
+        - textbox "Full name" [ref=e25]
+        - textbox "Email" [ref=e26]
+        - textbox "Phone (optional)" [ref=e27]
+        - button "Book appointment" [disabled] [ref=e28]
+  - button "Open Next.js Dev Tools" [ref=e8] [cursor=pointer]:
+    - img [ref=e9]
+  - alert [ref=e12]

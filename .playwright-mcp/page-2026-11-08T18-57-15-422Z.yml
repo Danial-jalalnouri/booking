@@ -1,0 +1,27 @@
+- generic [ref=e1]:
+  - generic [ref=e40]:
+    - banner [ref=e41]:
+      - generic [ref=e42]:
+        - heading "Dashboard" [level=1] [ref=e43]
+        - button "Log out" [ref=e44]
+    - main [ref=e45]:
+      - generic [ref=e46]:
+        - combobox [ref=e47]:
+          - option "Test Salon (test-salon)" [selected]
+        - 'link "Booking page: /book/test-salon" [ref=e48] [cursor=pointer]':
+          - /url: /book/test-salon
+      - generic [ref=e49]:
+        - button "bookings" [ref=e50]
+        - button "settings" [ref=e51]
+        - button "services" [active] [ref=e52]
+        - button "hours" [ref=e53]
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - textbox "Service name" [ref=e99]
+          - spinbutton [ref=e100]: "30"
+          - textbox "Price" [ref=e101]
+          - button "Add" [ref=e102]
+        - list
+  - button "Open Next.js Dev Tools" [ref=e16] [cursor=pointer]:
+    - img [ref=e17]
+  - alert [ref=e20]: Sign up

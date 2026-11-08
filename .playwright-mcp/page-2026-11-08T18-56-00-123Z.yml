@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - heading "Bookly" [level=1] [ref=e3]
+    - paragraph [ref=e4]: Appointment booking for any business. Create your business, define services and available time slots, share your booking link, and manage appointments from your dashboard.
+    - generic [ref=e5]:
+      - link "Get started" [ref=e6] [cursor=pointer]:
+        - /url: /signup
+      - link "Log in" [ref=e7] [cursor=pointer]:
+        - /url: /login
+  - alert [ref=e8]
