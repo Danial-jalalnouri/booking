@@ -84,67 +84,108 @@ export default function Dashboard() {
     router.refresh();
   }
 
-  if (loading) return <main className="p-8">Loading...</main>;
+  if (loading)
+    return (
+      <main className="p-20 text-center text-t3">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-[color:var(--spinner-track)] border-t-indigo-400" />
+        <p className="mt-4 text-sm">Loading your dashboard…</p>
+      </main>
+    );
 
   if (businesses.length === 0) {
     return (
-      <main className="max-w-xl mx-auto px-6 py-16">
-        <h1 className="text-2xl font-bold mb-2">Welcome</h1>
-        <p className="text-gray-600 mb-6">Create your first business to start accepting bookings.</p>
-        <form onSubmit={createBusiness} className="space-y-4">
-          <input className="w-full border rounded px-3 py-2" placeholder="Business name" value={newBiz.name}
-            onChange={(e) => setNewBiz({ ...newBiz, name: e.target.value })} required />
-          <input className="w-full border rounded px-3 py-2" placeholder="URL slug (e.g. my-salon)" value={newBiz.slug}
-            onChange={(e) => setNewBiz({ ...newBiz, slug: e.target.value.toLowerCase() })} required />
-          <textarea className="w-full border rounded px-3 py-2" placeholder="Description" value={newBiz.description}
-            onChange={(e) => setNewBiz({ ...newBiz, description: e.target.value })} />
-          <label className="block text-sm text-gray-600">Slot duration (minutes)</label>
-          <input className="w-full border rounded px-3 py-2" type="number" value={newBiz.slotDuration}
-            onChange={(e) => setNewBiz({ ...newBiz, slotDuration: Number(e.target.value) })} />
-          {bizError && <p className="text-red-600 text-sm">{bizError}</p>}
-          <button className="w-full bg-blue-600 text-white py-2 rounded font-medium">Create business</button>
-        </form>
+      <main className="max-w-xl mx-auto px-6 py-20">
+        <div className="card p-10">
+          <span className="brand-gradient mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl text-white shadow-lg shadow-indigo-600/25">🚀</span>
+          <h1 className="text-center text-2xl font-bold text-t1">Welcome aboard</h1>
+          <p className="mt-2 text-center text-sm text-t3">Create your first business to start accepting bookings.</p>
+          <form onSubmit={createBusiness} className="mt-8 space-y-4">
+            <div>
+              <label className="input-label">Business name</label>
+              <input className="input" placeholder="Glow Salon" value={newBiz.name}
+                onChange={(e) => setNewBiz({ ...newBiz, name: e.target.value })} required />
+            </div>
+            <div>
+              <label className="input-label">Booking URL slug</label>
+              <div className="flex items-center rounded-xl bg-[color:var(--input-bg)] border border-[color:var(--input-border)] shadow-sm focus-within:border-indigo-400 focus-within:ring-4 focus-within:ring-indigo-500/20">
+                <span className="pl-3.5 text-sm text-t3">/book/</span>
+                <input className="w-full bg-transparent px-1.5 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none"
+                  placeholder="glow-salon" value={newBiz.slug}
+                  onChange={(e) => setNewBiz({ ...newBiz, slug: e.target.value.toLowerCase() })} required />
+              </div>
+            </div>
+            <div>
+              <label className="input-label">Description (optional)</label>
+              <textarea className="input" placeholder="What do you offer?" value={newBiz.description}
+                onChange={(e) => setNewBiz({ ...newBiz, description: e.target.value })} />
+            </div>
+            <div>
+              <label className="input-label">Slot duration (minutes)</label>
+              <input className="input" type="number" value={newBiz.slotDuration}
+                onChange={(e) => setNewBiz({ ...newBiz, slotDuration: Number(e.target.value) })} />
+            </div>
+            {bizError && <p className="rounded-lg bg-rose-500/10 px-3 py-2 text-sm text-danger">{bizError}</p>}
+            <button className="btn-primary w-full py-3">
+              {loading ? "Creating…" : "Create business"}
+            </button>
+          </form>
+        </div>
       </main>
     );
   }
 
   return (
     <div className="min-h-screen">
-      <header className="border-b bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold">Dashboard</h1>
-          <button onClick={logout} className="text-sm text-gray-600">Log out</button>
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-3.5">
+          <span className="inline-flex items-center gap-2 shrink-0">
+            <span className="brand-gradient flex h-8 w-8 items-center justify-center rounded-xl text-white shadow-md shadow-indigo-600/25">
+              <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" strokeWidth="1.8" /><path d="M3.5 10h17" stroke="currentColor" strokeWidth="1.8" /></svg>
+            </span>
+            <span className="text-lg font-bold tracking-tight text-t1">Bookly</span>
+          </span>
+
+          <nav className="inline-flex rounded-xl border border-[color:var(--surface-border)] bg-[color:var(--btn2-bg)] p-1 shadow-sm ml-4">
+            {(["bookings", "settings", "services", "hours"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`rounded-lg px-4 py-1.5 text-sm font-medium capitalize transition ${
+                  tab === t
+                    ? "bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-md shadow-indigo-600/25"
+                    : "text-t3 hover:text-t1"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-3">
+            <select
+              className="input max-w-[240px] py-2"
+              value={selectedId}
+              onChange={(e) => setSelectedId(e.target.value)}
+            >
+              {businesses.map((b) => (
+                <option key={b.id} value={b.id}>{b.name} ({b.slug})</option>
+              ))}
+            </select>
+            <button onClick={logout} className="btn-secondary shrink-0 px-3.5 py-2 text-xs">Log out</button>
+          </div>
         </div>
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        <div className="flex flex-wrap items-center gap-4 mb-6">
-          <select
-            className="border rounded px-3 py-2"
-            value={selectedId}
-            onChange={(e) => setSelectedId(e.target.value)}
+      <main className="mx-auto max-w-6xl px-6 py-8">
+        {selected && (
+          <a
+            className="pill mb-6 inline-flex border border-indigo-500/25 bg-indigo-500/10 text-accent transition hover:bg-indigo-500/20"
+            href={`/book/${selected.slug}`}
+            target="_blank"
+            rel="noreferrer"
           >
-            {businesses.map((b) => (
-              <option key={b.id} value={b.id}>{b.name} ({b.slug})</option>
-            ))}
-          </select>
-          {selected && (
-            <a className="text-blue-600 text-sm" href={`/book/${selected.slug}`} target="_blank" rel="noreferrer">
-              Booking page: /book/{selected.slug}
-            </a>
-          )}
-        </div>
-
-        <div className="flex gap-2 mb-6 border-b">
-          {(["bookings", "settings", "services", "hours"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-4 py-2 capitalize ${tab === t ? "border-b-2 border-blue-600 font-medium" : "text-gray-500"}`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
+            🔗 /book/{selected.slug}
+          </a>
+        )}
 
         {tab === "bookings" && (
           <BookingsTab bookings={bookings} onRefresh={loadBookings} />
@@ -164,21 +205,45 @@ export default function Dashboard() {
 }
 
 function BookingsTab({ bookings, onRefresh }: { bookings: Booking[]; onRefresh: () => void }) {
+  const initials = (name: string) =>
+    name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase() || "?";
   return (
     <div>
-      <div className="flex justify-between mb-4">
-        <h2 className="text-lg font-semibold">Bookings</h2>
-        <button onClick={onRefresh} className="text-sm text-blue-600">Refresh</button>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-t1">
+          Bookings <span className="ml-1 text-sm font-normal text-t3">({bookings.length})</span>
+        </h2>
+        <button onClick={onRefresh} className="btn-secondary px-3.5 py-1.5 text-xs">↻ Refresh</button>
       </div>
-      {bookings.length === 0 && <p className="text-gray-500">No bookings yet.</p>}
+      {bookings.length === 0 && (
+        <div className="card p-12 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10 text-2xl">📭</div>
+          <p className="font-medium text-t1">No bookings yet</p>
+          <p className="mt-1 text-sm text-t3">Share your booking URL and appointments will show up here.</p>
+        </div>
+      )}
       <ul className="space-y-3">
         {bookings.map((b) => (
-          <li key={b.id} className="border rounded-lg p-4 bg-white">
-            <div className="font-medium">{b.customerName}</div>
-            <div className="text-sm text-gray-600">{b.customerEmail} {b.customerPhone && `· ${b.customerPhone}`}</div>
-            <div className="text-sm text-gray-600">{b.service.name}</div>
-            <div className="text-sm font-medium">{new Date(b.startTime).toLocaleString()} – {new Date(b.endTime).toLocaleTimeString()}</div>
-            <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded">{b.status}</span>
+          <li key={b.id} className="card flex flex-wrap items-center gap-4 p-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 text-sm font-bold text-accent">
+              {initials(b.customerName)}
+            </span>
+            <div className="min-w-[180px]">
+              <div className="font-semibold text-t1">{b.customerName}</div>
+              <div className="text-xs text-t3">{b.customerEmail}{b.customerPhone && ` · ${b.customerPhone}`}</div>
+            </div>
+            <div className="h-8 w-px bg-line" />
+            <div>
+              <div className="text-sm font-medium text-t2">{b.service.name}</div>
+              <div className="text-xs text-t3">{b.business.name}</div>
+            </div>
+            <div className="ml-auto text-right">
+              <div className="text-sm font-semibold text-t2">
+                {new Date(b.startTime).toLocaleDateString([], { month: "short", day: "numeric" })} ·{" "}
+                {new Date(b.startTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </div>
+              <span className="pill mt-1 bg-emerald-500/15 text-ok">{b.status}</span>
+            </div>
           </li>
         ))}
       </ul>
@@ -205,31 +270,45 @@ function SettingsTab({ business, onUpdated }: { business: Business; onUpdated: (
     onUpdated();
   }
   return (
-    <form onSubmit={save} className="space-y-4 max-w-lg">
-      <input className="w-full border rounded px-3 py-2" value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })} />
-      <textarea className="w-full border rounded px-3 py-2" value={form.description}
-        onChange={(e) => setForm({ ...form, description: e.target.value })} />
-      <label className="block text-sm text-gray-600">Slot duration (minutes)</label>
-      <input className="w-full border rounded px-3 py-2" type="number" value={form.slotDuration}
-        onChange={(e) => setForm({ ...form, slotDuration: Number(e.target.value) })} />
-      <button disabled={saving} className="bg-blue-600 text-white px-4 py-2 rounded">
-        {saving ? "Saving..." : "Save"}
+    <form onSubmit={save} className="card max-w-lg space-y-5 p-8">
+      <div>
+        <label className="input-label">Name</label>
+        <input className="input" value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })} />
+      </div>
+      <div>
+        <label className="input-label">Description</label>
+        <textarea className="input" value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })} />
+      </div>
+      <div>
+        <label className="input-label">Slot duration (minutes)</label>
+        <input className="input max-w-32" type="number" value={form.slotDuration}
+          onChange={(e) => setForm({ ...form, slotDuration: Number(e.target.value) })} />
+      </div>
+      <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/10 p-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-accent">Booking URL</div>
+        <p className="mt-1 font-mono text-sm text-t2">/book/{business.slug}</p>
+      </div>
+      <button disabled={saving} className="btn-primary px-6">
+        {saving ? "Saving…" : "Save changes"}
       </button>
-      <p className="text-sm text-gray-500">Booking URL: /book/{business.slug}</p>
     </form>
   );
 }
 
 function ServicesTab({ business, onUpdated }: { business: Business; onUpdated: () => void }) {
   const [form, setForm] = useState({ name: "", description: "", durationMin: business.slotDuration, price: "" });
+  const [adding, setAdding] = useState(false);
   async function add(e: React.FormEvent) {
     e.preventDefault();
+    setAdding(true);
     await fetch(`/api/businesses/${business.id}/services`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
+    setAdding(false);
     setForm({ name: "", description: "", durationMin: business.slotDuration, price: "" });
     onUpdated();
   }
@@ -239,23 +318,44 @@ function ServicesTab({ business, onUpdated }: { business: Business; onUpdated: (
   }
   return (
     <div className="space-y-6">
-      <form onSubmit={add} className="flex flex-wrap gap-2">
-        <input className="border rounded px-3 py-2" placeholder="Service name" value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-        <input className="border rounded px-3 py-2" type="number" placeholder="Duration" value={form.durationMin}
-          onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
-        <input className="border rounded px-3 py-2" placeholder="Price" value={form.price}
-          onChange={(e) => setForm({ ...form, price: e.target.value })} />
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">Add</button>
+      <form onSubmit={add} className="card flex flex-wrap items-end gap-3 p-5">
+        <div className="min-w-48 flex-1">
+          <label className="input-label">Service name</label>
+          <input className="input" placeholder="e.g. Consultation" value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        </div>
+        <div className="w-28">
+          <label className="input-label">Duration</label>
+          <input className="input" type="number" placeholder="min" value={form.durationMin}
+            onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
+        </div>
+        <div className="w-28">
+          <label className="input-label">Price</label>
+          <input className="input" placeholder="$0" value={form.price}
+            onChange={(e) => setForm({ ...form, price: e.target.value })} />
+        </div>
+        <button disabled={adding} className="btn-primary">
+          {adding ? "Adding…" : "+ Add service"}
+        </button>
       </form>
-      <ul className="space-y-2">
+      {business.services.length === 0 && (
+        <div className="card p-12 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10 text-2xl">✂️</div>
+          <p className="font-medium text-t1">No services yet</p>
+          <p className="mt-1 text-sm text-t3">Add your first service so clients can book it.</p>
+        </div>
+      )}
+      <ul className="grid gap-3 sm:grid-cols-2">
         {business.services.map((s) => (
-          <li key={s.id} className="border rounded p-3 bg-white flex justify-between items-center">
+          <li key={s.id} className="card group flex items-center justify-between p-5">
             <div>
-              <div className="font-medium">{s.name} {s.price && <span className="text-gray-500 text-sm">({s.price})</span>}</div>
-              <div className="text-sm text-gray-600">{s.durationMin} min {s.description && `· ${s.description}`}</div>
+              <div className="font-semibold text-t1">
+                {s.name}
+                {s.price && <span className="ml-2 text-sm font-medium text-accent">{s.price}</span>}
+              </div>
+              <div className="mt-0.5 text-xs text-t3">{s.durationMin} min{s.description && ` · ${s.description}`}</div>
             </div>
-            <button onClick={() => remove(s.id)} className="text-red-600 text-sm">Delete</button>
+            <button onClick={() => remove(s.id)} className="btn-danger opacity-70 hover:opacity-100">🗑 Delete</button>
           </li>
         ))}
       </ul>
@@ -265,6 +365,7 @@ function ServicesTab({ business, onUpdated }: { business: Business; onUpdated: (
 
 function HoursTab({ business, onUpdated }: { business: Business; onUpdated: () => void }) {
   const [hours, setHours] = useState(business.hours);
+  const [saving, setSaving] = useState(false);
   function update(day: number, field: "startTime" | "endTime", value: string) {
     setHours((prev) => {
       const existing = prev.find((h) => h.dayOfWeek === day);
@@ -285,35 +386,48 @@ function HoursTab({ business, onUpdated }: { business: Business; onUpdated: () =
     }
   }
   async function save() {
+    setSaving(true);
     await fetch(`/api/businesses/${business.id}/hours`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(hours.map(({ dayOfWeek, startTime, endTime }) => ({ dayOfWeek, startTime, endTime }))),
     });
+    setSaving(false);
     onUpdated();
   }
   return (
-    <div className="space-y-4 max-w-xl">
-      {DAYS.map((d, idx) => {
-        const h = hours.find((x) => x.dayOfWeek === idx);
-        const enabled = !!h;
-        return (
-          <div key={idx} className="flex items-center gap-3">
-            <label className="w-12 font-medium">{d}</label>
-            <input type="checkbox" checked={enabled} onChange={(e) => toggle(idx, e.target.checked)} />
-            {enabled && (
-              <>
-                <input type="time" className="border rounded px-2 py-1" value={h!.startTime}
-                  onChange={(e) => update(idx, "startTime", e.target.value)} />
-                <span>to</span>
-                <input type="time" className="border rounded px-2 py-1" value={h!.endTime}
-                  onChange={(e) => update(idx, "endTime", e.target.value)} />
-              </>
-            )}
-          </div>
-        );
-      })}
-      <button onClick={save} className="bg-blue-600 text-white px-4 py-2 rounded">Save hours</button>
+    <div className="card max-w-2xl space-y-1.5 p-6">
+      <div className="grid grid-cols-[3rem_1fr] gap-3">
+        {DAYS.map((d, idx) => {
+          const h = hours.find((x) => x.dayOfWeek === idx);
+          const enabled = !!h;
+          return (
+            <div key={idx} className={`col-span-2 grid grid-cols-[3rem_1fr_5fr] items-center gap-3 rounded-xl px-3 py-2.5 transition ${enabled ? "bg-indigo-500/10" : ""}`}>
+              <label className="font-semibold text-t2">{d}</label>
+              <label className="relative inline-flex cursor-pointer items-center">
+                <input type="checkbox" className="peer sr-only" checked={enabled}
+                  onChange={(e) => toggle(idx, e.target.checked)} />
+                <div className="h-5.5 w-9 rounded-full bg-slate-600 transition-colors after:absolute after:top-0.5 after:left-0.5 after:h-4.5 after:w-4.5 after:rounded-full after:bg-white after:shadow-sm after:transition-all peer-checked:bg-indigo-600 peer-checked:after:translate-x-3.5" />
+              </label>
+              {enabled && (
+                <div className="flex items-center gap-2">
+                  <input type="time" className="input px-2.5 py-1.5 max-w-[105px] text-xs" value={h!.startTime}
+                    onChange={(e) => update(idx, "startTime", e.target.value)} />
+                  <span className="text-xs text-t3">→</span>
+                  <input type="time" className="input px-2.5 py-1.5 max-w-[105px] text-xs" value={h!.endTime}
+                    onChange={(e) => update(idx, "endTime", e.target.value)} />
+                </div>
+              )}
+              {!enabled && <span className="text-xs text-t3">Closed</span>}
+            </div>
+          );
+        })}
+      </div>
+      <div className="pt-4">
+        <button onClick={save} disabled={saving} className="btn-primary px-6">
+          {saving ? "Saving…" : "Save hours"}
+        </button>
+      </div>
     </div>
   );
 }

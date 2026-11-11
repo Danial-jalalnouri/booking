@@ -1,8 +1,0 @@
-- generic [active] [ref=e1]:
-  - main [ref=e2]:
-    - heading "Booked!" [level=1] [ref=e48]
-    - paragraph [ref=e49]: Your appointment is confirmed. A confirmation will be sent to your email.
-    - button "Book another" [ref=e50]
-  - button "Open Next.js Dev Tools" [ref=e8] [cursor=pointer]:
-    - img [ref=e9]
-  - alert [ref=e12]
