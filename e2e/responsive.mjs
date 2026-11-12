@@ -142,6 +142,20 @@ const PAGES = [
       await p.locator("ul li", { hasText: "Piano Lesson" }).first().waitFor({ timeout: 10_000 });
     },
   },
+  {
+    id: "dashboard-settings", name: "Dashboard · settings", url: "/dashboard",
+    ready: async (p) => {
+      await p.locator('nav button:has-text("settings")').click();
+      await p.getByRole("button", { name: "Save changes" }).waitFor({ timeout: 10_000 });
+    },
+  },
+  {
+    id: "dashboard-hours", name: "Dashboard · hours", url: "/dashboard",
+    ready: async (p) => {
+      await p.locator('nav button:has-text("hours")').click();
+      await p.getByRole("button", { name: "Save hours" }).waitFor({ timeout: 10_000 });
+    },
+  },
 ];
 
 // ---------------------------------------------------------------------------

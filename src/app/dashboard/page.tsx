@@ -137,7 +137,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-3.5">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 gap-y-2.5 px-4 py-3.5 sm:gap-4 sm:px-6">
           <span className="inline-flex items-center gap-2 shrink-0">
             <span className="brand-gradient flex h-8 w-8 items-center justify-center rounded-xl text-white shadow-md shadow-indigo-600/25">
               <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" strokeWidth="1.8" /><path d="M3.5 10h17" stroke="currentColor" strokeWidth="1.8" /></svg>
@@ -145,25 +145,9 @@ export default function Dashboard() {
             <span className="text-lg font-bold tracking-tight text-t1">Bookly</span>
           </span>
 
-          <nav className="inline-flex rounded-xl border border-[color:var(--surface-border)] bg-[color:var(--btn2-bg)] p-1 shadow-sm ml-4">
-            {(["bookings", "settings", "services", "hours"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`rounded-lg px-4 py-1.5 text-sm font-medium capitalize transition ${
-                  tab === t
-                    ? "bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-md shadow-indigo-600/25"
-                    : "text-t3 hover:text-t1"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </nav>
-
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex min-w-0 items-center gap-2 sm:gap-3">
             <select
-              className="input max-w-[240px] py-2"
+              className="input w-32 min-w-0 py-2 text-xs sm:w-auto sm:max-w-[240px] sm:text-sm"
               value={selectedId}
               onChange={(e) => setSelectedId(e.target.value)}
             >
@@ -173,6 +157,22 @@ export default function Dashboard() {
             </select>
             <button onClick={logout} className="btn-secondary shrink-0 px-3.5 py-2 text-xs">Log out</button>
           </div>
+
+          <nav className="order-last -mx-1 inline-flex w-full overflow-x-auto rounded-xl border border-[color:var(--surface-border)] bg-[color:var(--btn2-bg)] p-1 shadow-sm sm:order-none sm:mx-0 sm:w-auto sm:overflow-visible sm:ml-4">
+            {(["bookings", "settings", "services", "hours"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium capitalize transition sm:px-4 ${
+                  tab === t
+                    ? "bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-md shadow-indigo-600/25"
+                    : "text-t3 hover:text-t1"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </nav>
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-6 py-8">
@@ -402,7 +402,7 @@ function HoursTab({ business, onUpdated }: { business: Business; onUpdated: () =
           const h = hours.find((x) => x.dayOfWeek === idx);
           const enabled = !!h;
           return (
-            <div key={idx} className={`col-span-2 grid grid-cols-[3rem_1fr_5fr] items-center gap-3 rounded-xl px-3 py-2.5 transition ${enabled ? "bg-indigo-500/10" : ""}`}>
+            <div key={idx} className={`col-span-2 grid grid-cols-[3rem_1fr] items-center gap-x-3 gap-y-2 rounded-xl px-3 py-2.5 transition sm:grid-cols-[3rem_1fr_5fr] ${enabled ? "bg-indigo-500/10" : ""}`}>
               <label className="font-semibold text-t2">{d}</label>
               <label className="relative inline-flex cursor-pointer items-center">
                 <input type="checkbox" className="peer sr-only" checked={enabled}
@@ -410,15 +410,15 @@ function HoursTab({ business, onUpdated }: { business: Business; onUpdated: () =
                 <div className="h-5.5 w-9 rounded-full bg-slate-600 transition-colors after:absolute after:top-0.5 after:left-0.5 after:h-4.5 after:w-4.5 after:rounded-full after:bg-white after:shadow-sm after:transition-all peer-checked:bg-indigo-600 peer-checked:after:translate-x-3.5" />
               </label>
               {enabled && (
-                <div className="flex items-center gap-2">
-                  <input type="time" className="input px-2.5 py-1.5 max-w-[105px] text-xs" value={h!.startTime}
+                <div className="col-start-2 flex items-center gap-2 sm:col-start-3">
+                  <input type="time" className="input w-20 px-2.5 py-1.5 text-xs sm:w-auto sm:max-w-[105px]" value={h!.startTime}
                     onChange={(e) => update(idx, "startTime", e.target.value)} />
                   <span className="text-xs text-t3">→</span>
-                  <input type="time" className="input px-2.5 py-1.5 max-w-[105px] text-xs" value={h!.endTime}
+                  <input type="time" className="input w-20 px-2.5 py-1.5 text-xs sm:w-auto sm:max-w-[105px]" value={h!.endTime}
                     onChange={(e) => update(idx, "endTime", e.target.value)} />
                 </div>
               )}
-              {!enabled && <span className="text-xs text-t3">Closed</span>}
+              {!enabled && <span className="col-start-2 text-xs text-t3 sm:col-start-3">Closed</span>}
             </div>
           );
         })}
