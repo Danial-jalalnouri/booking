@@ -1,0 +1,125 @@
+{
+  "runMeta": {
+    "app": "Bookly — Appointment Booking",
+    "target": "http://localhost:3000",
+    "runner": "Playwright (@playwright/test), headless Chromium",
+    "note": "Slot buttons on the public booking page display local browser time; storage/API use UTC."
+  },
+  "tests": [
+    {
+      "id": "01",
+      "title": "01 · Landing page",
+      "name": "Landing page",
+      "folder": "01-landing-page",
+      "desc": "Verifies the public home page renders correctly and offers the two entry CTAs (\"Get started\" → /signup, \"Log in\" → /login).",
+      "steps": [
+        { "img": "01-hero.png", "caption": "Page / loads with title \"Bookly - Appointment Booking\"; hero headline and copy visible." },
+        { "img": "02-cta-buttons.png", "caption": "\"Get started\" and \"Log in\" buttons present and point to /signup and /login (DOM-verified)." }
+      ]
+    },
+    {
+      "id": "02",
+      "title": "02 · Signup new user",
+      "name": "Signup new user",
+      "folder": "02-signup-new-user",
+      "desc": "Creates a brand-new owner account via /signup and verifies automatic sign-in and the empty-state onboarding.",
+      "steps": [
+        { "img": "01-signup-form.png", "caption": "Signup form shows name / email / password fields on the split auth layout." },
+        { "img": "02-form-filled.png", "caption": "Form filled with a unique per-run test account (name, email, password)." },
+        { "img": "03-signed-in-onboarding.png", "caption": "Submit redirects to /dashboard showing the \"Welcome aboard\" onboarding (no business yet)." }
+      ]
+    },
+    {
+      "id": "03",
+      "title": "03 · Create business",
+      "name": "Create business",
+      "folder": "03-onboarding-create-business",
+      "desc": "Creates the user's first business, which generates its shareable booking URL.",
+      "steps": [
+        { "img": "01-form-filled.png", "caption": "Onboarding form: business name \"E2E Studio\", unique slug, description, 30-min slot duration." },
+        { "img": "02-business-created.png", "caption": "Business created & selected; booking link /book/<slug> generated; tab bar visible." }
+      ]
+    },
+    {
+      "id": "04",
+      "title": "04 · Set working hours",
+      "name": "Set working hours",
+      "folder": "04-set-working-hours",
+      "desc": "Defines weekly availability — the time slots customers are allowed to book.",
+      "steps": [
+        { "img": "01-hours-form.png", "caption": "Hours tab shows Sun–Sat rows with on/off switches and time inputs (all off initially)." },
+        { "img": "02-mon-wed-enabled.png", "caption": "Toggled Mon, Tue, Wed on with defaults 09:00–17:00; other days stay closed." },
+        { "img": "03-hours-saved.png", "caption": "Save → state re-verified in DOM: 3 enabled days, each 09:00–17:00." }
+      ]
+    },
+    {
+      "id": "05",
+      "title": "05 · Add services",
+      "name": "Add services",
+      "folder": "05-add-services",
+      "desc": "Defines what the business offers (name, duration, price).",
+      "steps": [
+        { "img": "01-empty-state.png", "caption": "Services tab shows the \"No services yet\" empty state before anything is added." },
+        { "img": "02-first-service-added.png", "caption": "\"Piano Lesson\" (45 min, $50) added and visible in the list." },
+        { "img": "03-two-services.png", "caption": "\"Guitar Lesson\" (30 min, $40) added — both services listed with price & duration." }
+      ]
+    },
+    {
+      "id": "06",
+      "title": "06 · Public booking page",
+      "name": "Public booking page",
+      "folder": "06-public-booking-page",
+      "desc": "What a customer sees on the shareable URL /book/<slug>. The suite picks the first date (within 14 days) that actually has open slots.",
+      "steps": [
+        { "img": "01-hero-and-form.png", "caption": "Hero shows business name + description; both services in the dropdown with duration & price." },
+        { "img": "02-available-slots.png", "caption": "Chosen date shows multiple open slots rendered as selectable time buttons." }
+      ]
+    },
+    {
+      "id": "07",
+      "title": "07 · Book appointment",
+      "name": "Book appointment",
+      "folder": "07-book-appointment-as-customer",
+      "desc": "The full customer booking action, verified end-to-end including the \"You're booked!\" confirmation.",
+      "steps": [
+        { "img": "01-slot-selected.png", "caption": "Service \"Piano Lesson\" chosen; first available slot highlighted." },
+        { "img": "02-details-filled.png", "caption": "Customer details filled: name, email, phone." },
+        { "img": "03-booking-confirmed.png", "caption": "Submission succeeds → \"You're booked!\" confirmation screen." }
+      ]
+    },
+    {
+      "id": "08",
+      "title": "08 · Dashboard bookings",
+      "name": "Dashboard bookings",
+      "folder": "08-dashboard-bookings",
+      "desc": "The owner sees booked appointments, and a booked slot cannot be booked again.",
+      "steps": [
+        { "img": "01-bookings-list.png", "caption": "Bookings tab lists the appointment: customer, email, phone, service, business, time, status confirmed." },
+        { "img": "02-booked-slot-removed.png", "caption": "Re-opening the booking page for that date: the booked slot is gone (API-verified) — no double booking." }
+      ]
+    },
+    {
+      "id": "09",
+      "title": "09 · Theme switcher",
+      "name": "Theme switcher",
+      "folder": "09-theme-switcher",
+      "desc": "The floating dark/light toggle applies the theme instantly and persists the choice.",
+      "steps": [
+        { "img": "01-initial.png", "caption": "Initial theme state captured (dark or light, depending on persisted/OS preference)." },
+        { "img": "02-toggled.png", "caption": "After clicking the toggle the page theme flipped and the choice was saved to localStorage (DOM-verified)." }
+      ]
+    },
+    {
+      "id": "10",
+      "title": "10 · Logout and login",
+      "name": "Logout and login",
+      "folder": "10-logout-and-login",
+      "desc": "Session termination, route protection via middleware, and re-authentication.",
+      "steps": [
+        { "img": "01-logged-out.png", "caption": "\"Log out\" clears the session cookie and leaves the app." },
+        { "img": "02-redirected-to-login.png", "caption": "Visiting /dashboard while logged out is blocked — redirected to /login." },
+        { "img": "03-logged-back-in.png", "caption": "Logging in with the same credentials returns to /dashboard with the business selected." }
+      ]
+    }
+  ]
+}

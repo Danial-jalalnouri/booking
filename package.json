@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e": "bash scripts/run-e2e.sh",
+    "e2e:responsive": "node e2e/responsive.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -20,6 +22,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

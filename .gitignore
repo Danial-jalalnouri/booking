@@ -44,3 +44,8 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# e2e runs (generated)
+/e2e-reports
+/test-results
+/e2e-screenshots
