@@ -45,6 +45,7 @@ function BookingPage() {
     fetch(`/api/public/business/${slug}/slots?date=${date}`)
       .then((r) => r.json())
       .then((j) => setSlots(j.slots || []))
+      .catch(() => { /* aborted (e.g. navigation) */ })
       .finally(() => setLoadingSlots(false));
   }, [slug, date]);
 

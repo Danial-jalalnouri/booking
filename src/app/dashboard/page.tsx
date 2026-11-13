@@ -41,19 +41,23 @@ export default function Dashboard() {
   const selected = businesses.find((b) => b.id === selectedId);
 
   async function loadBusinesses() {
-    const res = await fetch("/api/businesses");
-    if (res.status === 401) { router.push("/login"); return; }
-    const j = await res.json();
-    setBusinesses(j.businesses || []);
-    if (!selectedId && (j.businesses || []).length) setSelectedId(j.businesses[0].id);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/businesses");
+      if (res.status === 401) { router.push("/login"); return; }
+      const j = await res.json();
+      setBusinesses(j.businesses || []);
+      if (!selectedId && (j.businesses || []).length) setSelectedId(j.businesses[0].id);
+      setLoading(false);
+    } catch { /* aborted (e.g. navigation) — nothing to load into */ }
   }
 
   async function loadBookings() {
-    const url = selectedId ? `/api/dashboard/bookings?businessId=${selectedId}` : `/api/dashboard/bookings`;
-    const res = await fetch(url);
-    const j = await res.json();
-    setBookings(j.bookings || []);
+    try {
+      const url = selectedId ? `/api/dashboard/bookings?businessId=${selectedId}` : `/api/dashboard/bookings`;
+      const res = await fetch(url);
+      const j = await res.json();
+      setBookings(j.bookings || []);
+    } catch { /* aborted (e.g. navigation) — nothing to load into */ }
   }
 
   useEffect(() => { loadBusinesses(); }, []);
